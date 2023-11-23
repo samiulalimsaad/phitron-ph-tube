@@ -7,7 +7,6 @@ const categoryNode = document.querySelector("#category");
 const categoryDataNode = document.querySelector("#data");
 
 function sortBtnHandler() {
-    console.log("working");
     isSorting = !isSorting;
     setCategoriesData(currentCategory, true);
 }
@@ -26,7 +25,6 @@ async function getDataByCategories(id) {
     );
 
     const { data } = await res.json();
-    console.log(data);
     return data;
 }
 
