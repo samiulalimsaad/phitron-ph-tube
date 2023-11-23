@@ -39,6 +39,26 @@ async function setCategories() {
     });
 }
 
+function convertMilliseconds(milliseconds) {
+    // Convert milliseconds to seconds
+    let seconds = Math.floor(milliseconds / 1000);
+
+    // Calculate days, hours, minutes, and remaining seconds
+    let days = Math.floor(seconds / (24 * 3600));
+    seconds %= 24 * 3600;
+    let hours = Math.floor(seconds / 3600);
+    seconds %= 3600;
+    let minutes = Math.floor(seconds / 60);
+    seconds %= 60;
+
+    let str = "";
+    if (days) str += `${days} days `;
+    if (hours) str += `${hours} hours `;
+    if (minutes) str += `${minutes} minutes `;
+    if (seconds) str += `${seconds} seconds`;
+    return str;
+}
+
 async function setCategoriesData(id = 1000) {
     currentCategory = id;
     setCategories();
@@ -46,13 +66,18 @@ async function setCategoriesData(id = 1000) {
     categoryDataNode.innerHTML = "";
     data?.map((c) => {
         categoryDataNode.innerHTML += `
-        <div id="${c.category_id}" class="card card-compact bg-base-100 shadow-xl">
-                <figure class="h-52">
+        <div id="${
+            c.category_id
+        }" class="card card-compact bg-base-100 shadow-xl">
+                <figure class="h-52 relative">
                     <img
                         class="object-cover"
                         src="${c.thumbnail}"
                         alt="${c.title}"
                     />
+                    <span class="absolute right-2 bottom-2 bg-black/50 text-white px-4 rounded-md">${convertMilliseconds(
+                        c.others?.posted_date || 0
+                    )}</span>
                 </figure>
                 <div class="card-body">
                     <div class="flex items-center gap-2">
