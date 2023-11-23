@@ -64,6 +64,17 @@ async function setCategoriesData(id = 1000) {
     setCategories();
     const data = await getDataByCategories(id);
     categoryDataNode.innerHTML = "";
+
+    if (data?.length === 0)
+        categoryDataNode.innerHTML += `
+            <div class="flex items-center justify-center h-full w-full col-span-4">
+                <div>
+                    <img src="./assets/Icon.png" alt="Not found" />
+                    <p>No data Found</p>
+                </div>            
+            </div>
+        `;
+
     data?.map((c) => {
         categoryDataNode.innerHTML += `
         <div id="${
