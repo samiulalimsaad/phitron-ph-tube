@@ -1,15 +1,14 @@
 // Global variables
 let currentCategory = 1000;
-let isSorting = false;
 
 // DOM Nodes
 const categoryNode = document.querySelector("#category");
 const categoryDataNode = document.querySelector("#data");
 
 function sortBtnHandler() {
-    isSorting = !isSorting;
     setCategoriesData(currentCategory, true);
 }
+
 async function getCategories() {
     const res = await fetch(
         "https://openapi.programming-hero.com/api/videos/categories"
@@ -72,17 +71,16 @@ async function setCategoriesData(id = 1000, sort = false) {
     let data = await getDataByCategories(id);
     categoryDataNode.innerHTML = "";
 
-    if (isSorting && sort)
+    if (sort)
         data = data.sort(
-            (a, b) => parseFloat(a.others?.views) - parseFloat(b.others?.views)
+            (a, b) => parseFloat(b.others?.views) - parseFloat(a.others?.views)
         );
-
     if (data?.length === 0)
         categoryDataNode.innerHTML += `
             <div class="flex items-center justify-center h-full w-full col-span-4">
-                <div>
+                <div class="text-center">
                     <img src="./assets/Icon.png" alt="Not found" />
-                    <p>No data Found</p>
+                    <p class="text-xl font-semibold">No data Found</p>
                 </div>            
             </div>
         `;
@@ -90,7 +88,7 @@ async function setCategoriesData(id = 1000, sort = false) {
         categoryDataNode.innerHTML += `
         <div 
             id="${c.category_id}" 
-            class="card card-compact bg-base-100 shadow-xl">
+            class="card card-compact bg-base-100 shadow rounded">
                 <figure class="h-52 relative">
                     <img
                         class="object-cover"
@@ -113,7 +111,7 @@ async function setCategoriesData(id = 1000, sort = false) {
 
                         <h2 class="card-title">${c.title}</h2>
                     </div>
-                    <div class="pl-10">
+                    <div class="pl-10 text-slate-500">
                         <h3 class="flex gap-2">${c.authors?.[0]?.profile_name} 
                         ${
                             c.authors?.[0]?.verified &&
@@ -135,7 +133,7 @@ async function setCategoriesData(id = 1000, sort = false) {
                         </span>`
                         }
                         </h3>
-                        <p class="card-actions">${c.others?.views}</p>
+                        <p class="card-actions">${c.others?.views} views</p>
                     </div>
                 </div>
             </div>
